@@ -7,8 +7,9 @@ from django.core.files.base import ContentFile
 # Create your models here.
 class Product(models.Model):
     title =  models.CharField(max_length=200)
-    url = models.URLField()
+    url = models.URLField(unique=True)
     description = models.TextField(blank=True)
+    is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
