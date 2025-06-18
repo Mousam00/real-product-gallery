@@ -2,10 +2,17 @@
 import { RouterLink} from 'vue-router'
 import { Upload, Heart, LogOut, Shield, User } from 'lucide-vue-next'
 import {ref} from 'vue'
+import AuthModal from '../AuthModal.vue'
+import { useAuthStore } from '@/stores/auth'
 // import AuthModal from './AuthModal.vue'
 // import ProductSubmissionModal from './ProductSubmissionModal.vue'
-
-const isAuthenticates = ref(false)
+const showModal = ref(false)
+const authMode = ref('login')
+const openModal = (mode) =>{
+  authMode.value = mode
+  showModal.value = true
+}
+const authStore = useAuthStore()
 
 </script>
 
@@ -48,7 +55,7 @@ const isAuthenticates = ref(false)
         <!-- Action buttons -->
         <div class="flex items-center space-x-4">
           <!-- Authenticated User Display -->
-           <div v-if="isAuthenticates">
+           <div v-if="authStore.isAuthenticated" class="flex space-x-4 items-center">
           <span class="text-sm text-gray-600 hidden sm:block">
             Welcome, <strong>User</strong>!
             <Shield class="h-4 w-4 text-amber-500 inline-flex items-center ml-1" title="Admin" />
@@ -56,7 +63,7 @@ const isAuthenticates = ref(false)
 
           <!-- Submit Product Button -->
           <button
-            class="px-3 py-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded text-sm flex items-center"
+            class="px-3 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded text-sm flex items-center"
           >
             <Upload class="h-4 w-4 mr-2" />
             <span class="hidden sm:inline">Submit Product</span>
@@ -65,14 +72,17 @@ const isAuthenticates = ref(false)
 
           <!-- Logout Button -->
           <button
-            class="text-gray-700 hover:text-red-600 text-sm flex items-center"
+          @click="authStore.logout"
+            class="text-gray-700 hover:text-red-600 text-sm font-medium flex items-center"
           >
             <LogOut class="h-4 w-4 mr-2" />
             <span class="hidden sm:inline">Logout</span>
           </button>
         </div>
           <!-- Login Button -->
+           <div v-else class="flex space-x-4">
           <button
+          @click="openModal('login')"
             class="text-gray-700 hover:text-indigo-600 text-sm flex items-center hover:bg-gray-100 p-2 rounded"
           >
             <User class="h-4 w-4 mr-2" />
@@ -81,11 +91,13 @@ const isAuthenticates = ref(false)
 
           <!-- Sign Up Button -->
           <button
+          @click="openModal('register')"
             class="px-3 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded text-sm flex items-center"
           >
             <Upload class="h-4 w-4 mr-2" />
             Sign Up
           </button>
+          </div>
         </div>
       </div>
     </div>
@@ -94,4 +106,10 @@ const isAuthenticates = ref(false)
   <!-- Modals -->
   <!-- <AuthModal />
   <ProductSubmissionModal /> -->
+  <AuthModal
+  :is-open="showModal"
+  :mode="authMode"
+  @close="showModal = false"
+  @mode-change="val => authMode = val"
+/>
 </template>

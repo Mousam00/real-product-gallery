@@ -13,6 +13,10 @@ const logout = () => {
     localStorage.removeItem("refresh_token")
     token.value = null
 }
-
-return {token, isAuthenticated, login, logout }
+const setToken = (accessToken, refreshToken) => {
+    localStorage.setItem("access_token", accessToken)
+    localStorage.setItem("refresh_token", refreshToken)
+    token.value = accessToken
+}
+return {token, isAuthenticated, login, logout, setToken }
 })
