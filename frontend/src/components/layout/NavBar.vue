@@ -45,7 +45,8 @@ const authStore = useAuthStore()
           </RouterLink>
 
           <RouterLink
-            to="/admin"
+          v-if="authStore.isAdmin"
+            to="/admin-panel"
             class="text-sm font-medium transition-colors hover:text-indigo-600"
           >
             Admin

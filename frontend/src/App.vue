@@ -1,16 +1,14 @@
 <script setup>
-import HelloWorld from './components/layout/NavBar.vue'
+import NavBar from './components/layout/NavBar.vue';
 import HomePage from './views/HomePage.vue';
-import FeturedProduct from './views/FeturedProduct.vue';
+import { RouterView } from 'vue-router';
 import Footer from './components/layout/Footer.vue';
 </script>
 
 <template>
-
-  <HelloWorld />
-  <HomePage />
-  <FeturedProduct />
-  <Footer />
+  <NavBar />
+  <RouterView />
+  <Footer></Footer>
 
 
 </template>

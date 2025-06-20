@@ -68,21 +68,21 @@ const featuredProducts = [
   {
     id: 1,
     name: 'Product One',
-    image: 'https://via.placeholder.com/300',
+    image: 'https://images.unsplash.com/photo-1749731630653-d9b3f00573ed?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     rating: 4.5,
     reviewCount: 124
   },
   {
     id: 2,
     name: 'Product Two',
-    image: 'https://via.placeholder.com/300',
+    image: 'https://images.unsplash.com/photo-1749731630653-d9b3f00573ed?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     rating: 4.0,
     reviewCount: 98
   },
   {
     id: 3,
     name: 'Product Three',
-    image: 'https://via.placeholder.com/300',
+    image: 'https://images.unsplash.com/photo-1749731630653-d9b3f00573ed?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     rating: 5,
     reviewCount: 210
   }

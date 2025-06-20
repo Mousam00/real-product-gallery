@@ -83,6 +83,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth.js'
+const auth =useAuthStore()
+import axios from 'axios'
 
 const props = defineProps({
   isOpen: Boolean,
@@ -104,9 +107,6 @@ const formData = ref({
 
 const showPassword = ref(false)
 const isLoading = ref(false)
-
-import { useAuthStore } from '@/stores/auth.js'
-import axios from 'axios'
 
 const handleSubmit = async () => {
   isLoading.value = true
@@ -133,9 +133,10 @@ const handleSubmit = async () => {
   // LOGIN LOGIC
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/accounts/login/',formData.value)
-    useAuthStore().setToken(response.data.access,response.data.refresh)
+    const {access,refresh,user} = response.data
     console.log(response);
-    
+    auth.login(access,refresh,user)
+    emit('close')
     
   } catch (err) {
     alert(err.message)

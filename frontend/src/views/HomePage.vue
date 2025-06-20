@@ -1,3 +1,25 @@
+<script setup>
+import { ref } from 'vue';
+import FeturedProduct from './FeturedProduct.vue';
+import { RouterLink } from 'vue-router'
+import { Search, Upload, Users, Camera, Star } from 'lucide-vue-next'
+import ReviewModal from './ReviewModel.vue';
+import { useAuthStore } from '@/stores/auth';
+const auth = useAuthStore();
+
+const isModalOpen = ref(false)
+
+const openModal = () => {
+  isModalOpen.value = true
+}
+const closeModal = () => {
+  isModalOpen.value = false
+}
+
+
+
+</script>
+
 <template>
   <section class="relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-r from-indigo-600/10 to-purple-600/10"></div>
@@ -25,6 +47,7 @@
           </RouterLink>
 
           <button
+          @click="openModal"
             class="border border-indigo-200 text-indigo-600 hover:bg-indigo-50 px-8 py-3 text-lg rounded transition-all duration-200 flex items-center"
           >
             <Upload class="h-5 w-5 mr-2" />
@@ -49,9 +72,8 @@
       </div>
     </div>
   </section>
-</template>
 
-<script setup>
-import { RouterLink } from 'vue-router'
-import { Search, Upload, Users, Camera, Star } from 'lucide-vue-next'
-</script>
+  <ReviewModal :is-open="isModalOpen" @close="closeModal" />
+  <FeturedProduct />
+
+</template>
