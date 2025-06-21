@@ -86,10 +86,11 @@ const handleSubmit = async () => {
       <div class="space-y-4 p-4 bg-gray-50 rounded-lg mb-6">
         <h3 class="font-semibold text-gray-900">Product Information</h3>
         <label for="product-title" class="block mb-2 font-medium text-gray-700">Product Title *</label>
-        <input v-model="productTitle" id="product-title" placeholder="Product Title *" class="w-full border rounded p-2" />
-        <label for="product-url" class="block mb-2 font-medium text-gray-700">Product URL</label>
-        <input v-model="productUrl" type="url" placeholder="Product URL" class="w-full border rounded p-2" />
-        <textarea v-model="productDescription" rows="3" placeholder="Product Description" class="w-full border rounded p-2"></textarea>
+        <input v-model="productTitle" id="product-title" placeholder="Product Title *" class="w-full border border-gray-300 bg-white rounded-md p-2" />
+        <label for="product-url" class="block mb-2 font-medium text-gray-700">Product URL *</label>
+        <input v-model="productUrl" type="url" placeholder="https://example.com/product/" class="w-full border  border-gray-300 bg-white rounded-md p-2" />
+        <label for="product-description" class="block mb-2 font-medium text-gray-700">Product Description *</label>
+        <textarea v-model="productDescription" id="product-description" rows="3" placeholder="Product Description" class="w-full border border-gray-300 bg-white rounded-md p-2"></textarea>
       </div>
 
       <!-- Review Info -->
@@ -97,6 +98,7 @@ const handleSubmit = async () => {
         <h3 class="font-semibold text-gray-900">Your Review</h3>
 
         <!-- Rating -->
+        <h3>Rating *</h3>
         <div class="flex items-center space-x-1">
           <button v-for="star in 5" :key="star" type="button" @click="rating = star">
             <Star :class="['w-7 h-7 transition', star <= rating ? 'text-yellow-400 fill-current' : 'text-gray-300']" />
@@ -105,7 +107,8 @@ const handleSubmit = async () => {
         </div>
 
         <!-- Caption -->
-        <textarea v-model="reviewCaption" rows="4" placeholder="Your review caption *" class="w-full border rounded p-2"></textarea>
+         <h3>Review Caption *</h3>
+        <textarea v-model="reviewCaption" rows="4" placeholder="Your review caption *" class="w-full border border-gray-300 bg-white rounded-md p-2"></textarea>
 
         <!-- Image Upload -->
         <div>

@@ -18,21 +18,21 @@
         >
           <div class="relative overflow-hidden">
             <img
-              :src="product.image"
-              :alt="product.name"
+              :src="getImageUrl(product)"
+              :alt="product.title"
               class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
           <div class="p-6">
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ product.name }}</h3>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ product.title }}</h3>
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-1">
                 <Star
                   v-for="i in 5"
                   :key="i"
                   class="h-4 w-4"
-                  :class="i <= Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'"
+                  :class="i <= Math.floor(product.average_rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'"
                 />
                 <span class="text-sm text-gray-600 ml-2">
                   {{ product.rating }} ({{ product.reviewCount }} reviews)
@@ -62,29 +62,63 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { Star } from 'lucide-vue-next'
+import { ref } from 'vue';
+import api from '@/axios';
+import { onMounted } from 'vue';
 
 // Dummy product array — replace this later with props or API call
-const featuredProducts = [
-  {
-    id: 1,
-    name: 'Product One',
-    image: 'https://images.unsplash.com/photo-1749731630653-d9b3f00573ed?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    rating: 4.5,
-    reviewCount: 124
-  },
-  {
-    id: 2,
-    name: 'Product Two',
-    image: 'https://images.unsplash.com/photo-1749731630653-d9b3f00573ed?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    rating: 4.0,
-    reviewCount: 98
-  },
-  {
-    id: 3,
-    name: 'Product Three',
-    image: 'https://images.unsplash.com/photo-1749731630653-d9b3f00573ed?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    rating: 5,
-    reviewCount: 210
+const featuredProducts = ref([
+  // {
+  //   id: 1,
+  //   name: 'Product One',
+  //   image: 'https://images.unsplash.com/photo-1749731630653-d9b3f00573ed?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  //   rating: 4.5,
+  //   reviewCount: 124
+  // },
+  // {
+  //   id: 2,
+  //   name: 'Product Two',
+  //   image: 'https://images.unsplash.com/photo-1749731630653-d9b3f00573ed?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  //   rating: 4.0,
+  //   reviewCount: 98
+  // },
+  // {
+  //   id: 3,
+  //   name: 'Product Three',
+  //   image: 'https://images.unsplash.com/photo-1749731630653-d9b3f00573ed?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  //   rating: 5,
+  //   reviewCount: 210
+  // }
+])
+
+// const MyProducts= []
+
+
+const fetchProduct = async() =>{
+
+  try {
+    const response = await api.get('featured/');
+    console.log(response.data);
+    
+    
+    featuredProducts.value = response.data
+    // console.log(featuredProducts);
+    
+  } catch (error) {
+    console.log(error);
+    
   }
-]
+}
+
+const apiBaseURL = 'http://127.0.0.1:8000'
+
+function getImageUrl(product) {
+  return product.featured_image
+    ? apiBaseURL + product.featured_image
+    : 'https://via.placeholder.com/400x300?text=No+Image'
+}
+
+onMounted(() => {
+  fetchProduct()
+})
 </script>

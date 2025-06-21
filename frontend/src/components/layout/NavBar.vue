@@ -4,6 +4,7 @@ import { Upload, Heart, LogOut, Shield, User } from 'lucide-vue-next'
 import {ref} from 'vue'
 import AuthModal from '../AuthModal.vue'
 import { useAuthStore } from '@/stores/auth'
+import ReviewModel from '@/views/ReviewModel.vue'
 // import AuthModal from './AuthModal.vue'
 // import ProductSubmissionModal from './ProductSubmissionModal.vue'
 const showModal = ref(false)
@@ -11,6 +12,9 @@ const authMode = ref('login')
 const openModal = (mode) =>{
   authMode.value = mode
   showModal.value = true
+}
+const closeModal = () => {
+  showModal.value = false
 }
 const authStore = useAuthStore()
 
@@ -64,6 +68,7 @@ const authStore = useAuthStore()
 
           <!-- Submit Product Button -->
           <button
+          @click="openModal('submit')"
             class="px-3 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded text-sm flex items-center"
           >
             <Upload class="h-4 w-4 mr-2" />
@@ -107,10 +112,14 @@ const authStore = useAuthStore()
   <!-- Modals -->
   <!-- <AuthModal />
   <ProductSubmissionModal /> -->
+  <ReviewModel v-if="authStore.isAuthenticated" :is-open="showModal" @close="closeModal" />
+
   <AuthModal
+  v-else
   :is-open="showModal"
   :mode="authMode"
   @close="showModal = false"
   @mode-change="val => authMode = val"
 />
+
 </template>

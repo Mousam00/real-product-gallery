@@ -5,6 +5,7 @@ import { RouterLink } from 'vue-router'
 import { Search, Upload, Users, Camera, Star } from 'lucide-vue-next'
 import ReviewModal from './ReviewModel.vue';
 import { useAuthStore } from '@/stores/auth';
+import AuthModal from '@/components/AuthModal.vue';
 const auth = useAuthStore();
 
 const isModalOpen = ref(false)
@@ -16,7 +17,7 @@ const closeModal = () => {
   isModalOpen.value = false
 }
 
-
+const authMode =ref('register')
 
 </script>
 
@@ -47,6 +48,16 @@ const closeModal = () => {
           </RouterLink>
 
           <button
+          v-if="auth.isAuthenticated"
+          @click="openModal"
+            class="border border-indigo-200 text-indigo-600 hover:bg-indigo-50 px-8 py-3 text-lg rounded transition-all duration-200 flex items-center"
+          >
+            <Upload class="h-5 w-5 mr-2" />
+            Upload Review
+          </button>
+
+          <button
+          v-else
           @click="openModal"
             class="border border-indigo-200 text-indigo-600 hover:bg-indigo-50 px-8 py-3 text-lg rounded transition-all duration-200 flex items-center"
           >
@@ -73,7 +84,12 @@ const closeModal = () => {
     </div>
   </section>
 
-  <ReviewModal :is-open="isModalOpen" @close="closeModal" />
+  <ReviewModal v-if="auth.isAuthenticated" :is-open="isModalOpen" @close="closeModal" />
+  <AuthModal v-else :is-open="isModalOpen"
+  :mode="authMode"
+  @close="closeModal"
+  @mode-change="val => authMode = val"
+/>
   <FeturedProduct />
 
 </template>
