@@ -6,9 +6,17 @@ from django.core.files.base import ContentFile
 
 # Create your models here.
 class Product(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    )
+
     title =  models.CharField(max_length=200)
-    url = models.URLField()
+    url = models.URLField(unique=True)
     description = models.TextField(blank=True)
+    status = models.CharField(max_length=10,choices=STATUS_CHOICES,default='pending')
+    submited_by = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -19,6 +27,8 @@ class Review(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="reviews", on_delete=models.CASCADE)
     caption = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    rating = models.PositiveSmallIntegerField(default=0)
+    isInitialReview = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user.username}'s review for {self.product.title}"

@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv, find_dotenv
+
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,7 +42,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'djoser',
+    'rest_framework.authtoken',
+
+    'django.contrib.sites',  # required for allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',  # for Google login
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    'django_extensions',
+
+
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
@@ -60,6 +73,8 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    "allauth.account.middleware.AccountMiddleware", # all auth middleware
+
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -161,3 +176,30 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = 'accounts.User' #custom user model
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+SITE_ID = 2
+SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_AUTO_LINK_EMAIL = True
+# SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_UNIQUE_EMAIL = True
+# LOGIN_REDIRECT_URL = 'http://localhost:5173/'  # redirect after login
+# LOGIN_REDIRECT_URL = 'http://localhost:5173/auth/social/google/callback'
+FRONTEND_URL = 'http://localhost:5173/'  # frontend url
+LOGIN_REDIRECT_URL = 'http://localhost:5173/'
+
+# GOOGLE_OAUTH2_REDIRECT_URI = 'http://localhost:8000/auth/google/login/callback/'
+
+
+REST_USE_JWT = True
+
+
+load_dotenv(find_dotenv())
+SOCIAL_AUTH_GOOGLE_CLIENT_ID=os.environ.get('SOCIAL_AUTH_GOOGLE_CLIENT_ID')
+SOCIAL_AUTH_GOOGLE_SECRET=os.environ.get('SOCIAL_AUTH_GOOGLE_SECRET')

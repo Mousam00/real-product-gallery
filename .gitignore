@@ -8,3 +8,23 @@ wheels/
 
 # Virtual environments
 .venv
+.env
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+
+# Environment variables
+.env
+*.env
+**/*.env
+
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# IDE files
+.vscode/
+.idea/
