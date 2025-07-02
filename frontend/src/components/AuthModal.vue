@@ -164,7 +164,7 @@ const handleSubmit = async () => {
 }
 
 const loginWithGoogle = () => {
-  window.location.href = 'http://localhost:8000/auth/google/login/'
+  window.location.href = 'http://localhost:8000/auth/account/google/login/'
 }
 
 const formatErrorResponse = (data) => {

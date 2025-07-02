@@ -34,7 +34,7 @@ router.beforeEach((to, from, next) => {
   const auths = useAuthStore()
   const path = to.path.replace(/\/$/, '')  // Normalize trailing slash
 
-  if (path === '/admin-panel' && !auths.isAdmin) {
+  if (path === '/admin-panel/' && !auths.isAdmin) {
     next('/')
   } else {
     next()

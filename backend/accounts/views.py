@@ -99,7 +99,7 @@ class GoogleAuthRedirectAPIView(APIView):
             'code': code,
             'client_id': settings.SOCIAL_AUTH_GOOGLE_CLIENT_ID,
             'client_secret': settings.SOCIAL_AUTH_GOOGLE_SECRET,
-            'redirect_uri': 'http://localhost:8000/auth/google/login/callback/',
+            'redirect_uri': 'http://localhost:8000/auth/account/google/login/callback/',
             'grant_type': 'authorization_code'
         }
 

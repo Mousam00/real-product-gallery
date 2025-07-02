@@ -1,13 +1,15 @@
 from django.urls import path,include
 from rest_framework.routers import DefaultRouter
 from .views import ReviewViewSet
-from .views import FeaturedProductsView,ProductDetailsView,GalleryView
+from .views import FeaturedProductsView,ProductDetailsView,GalleryView,OnlyReviewViewSet
 from .views import AdminPanelView
 router = DefaultRouter()
 
 router.register(r'review',ReviewViewSet,basename='review')
 router.register(r'admin',AdminPanelView,basename='product')
-# router.register(r'featured',FeaturedProductsView,basename='featured')
+router.register(r'only-review', OnlyReviewViewSet, basename='only-review')
+
+
 
 urlpatterns = [
     path('', include(router.urls)),

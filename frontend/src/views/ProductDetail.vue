@@ -45,6 +45,7 @@
           </div>
 
           <button
+          @click="openModal()"
             class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-medium flex items-center">
             <Plus class="h-4 w-4 mr-2" /> Add Review
           </button>
@@ -107,18 +108,32 @@
     </div>
 
   </div>
+  <ReviewModel :isOpen="showModal"  mode="only-review" :productId="selectedProductId" @close="closeModal" />
+
 </template>
 
 <script setup>
 import api from '@/axios'
 import { useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
-import { Star, ExternalLink, User, Calendar, Plus } from 'lucide-vue-next';
+import { Star, ExternalLink, User, Calendar, Plus, FastForward } from 'lucide-vue-next';
 import DOMPurify from 'dompurify'
+import ReviewModel from './ReviewModel.vue';
 
 const route = useRoute();
 const product = ref(null)
 const errorMessage = ref('');
+
+const showModal = ref(false)
+
+const openModal = (mode) => {
+
+  showModal.value = true
+}
+const closeModal = () => {
+  showModal.value = false
+}
+const selectedProductId = ref(null)
 
 function sanitize(html) {
   return DOMPurify.sanitize(html)
@@ -128,6 +143,7 @@ const fetchDetails = async () => {
   try {
     const id = route.params.id
     const response = await api.get(`/products/${id}`);
+    console.log(response.data);
     
     product.value = response.data;
   } catch (error) {

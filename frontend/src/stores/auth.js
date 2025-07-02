@@ -13,7 +13,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   // Getters
   const isAuthenticated = computed(() => !!token.value);
-  const isAdmin = computed(() => user.value?.is_staff || false);
+  const isAdmin = computed(() => user.value?.isAdmin || false);
+  const username = computed(() => user.value?.username || 'user')
 
   // Actions
   const login = (access, refresh, userData) => {
@@ -31,7 +32,7 @@ export const useAuthStore = defineStore('auth', () => {
     isLoading.value = true;
     error.value = null;
     try {
-      const response = await axios.get('http://localhost:8000/auth/google/login/callback/', {
+      const response = await axios.get('http://localhost:8000/auth/account/google/login/callback/', {
         params: { code }
       });
       
@@ -97,7 +98,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/token/refresh/', {
+      const response = await axios.post('http://127.0.0.1:8000/auth/jwt/refresh/', {
         refresh: refreshToken.value
       });
       
@@ -125,6 +126,7 @@ export const useAuthStore = defineStore('auth', () => {
     token,
     refreshToken,
     user,
+    username,
     isLoading,
     error,
     isAuthenticated,

@@ -84,6 +84,39 @@ class ReviewSerializer(serializers.ModelSerializer):
             ReviewImage.objects.create(review=review, image=image_file)
 
         return review
+class OnlyReviewSerializer(serializers.ModelSerializer):
+    images = ReviewImageSerializer(many=True, read_only=True)
+    uploaded_images = serializers.ListField(
+        child=serializers.ImageField(),
+        write_only=True
+    )
+    user = serializers.StringRelatedField(read_only=True)
+
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), write_only=True)
+
+    class Meta:
+        model = Review
+        fields = [
+            'id', 'product', 'caption', 'images', 'uploaded_images',
+            'user', 'rating', 'created_at'
+        ]
+
+    def create(self, validated_data):
+        images_data = validated_data.pop('uploaded_images')
+        product = validated_data.pop('product')
+        user = self.context['request'].user
+
+        review = Review.objects.create(
+            product=product,
+            user=user,
+            caption=validated_data.get('caption'),
+            rating=validated_data.get('rating', 0)
+        )
+
+        for image_file in images_data:
+            ReviewImage.objects.create(review=review, image=image_file)
+
+        return review
 
 class ReviewSummarySerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(source='user.username', read_only=True)

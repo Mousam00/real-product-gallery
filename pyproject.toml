@@ -13,6 +13,7 @@ dependencies = [
     "django-extensions>=4.1",
     "djangorestframework>=3.16.0",
     "djangorestframework-simplejwt>=5.5.0",
+    "djoser>=2.3.1",
     "dotenv>=0.9.9",
     "git-filter-repo>=2.47.0",
     "pillow>=11.2.1",

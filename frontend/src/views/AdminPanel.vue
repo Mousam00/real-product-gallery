@@ -115,7 +115,7 @@ const handleClick = async (id, status) => {
 }
 const featchProducts = async () => {
   try {
-    const response = await api.get('/admin')
+    const response = await api.get('/admin/')
     pendingProducts.value = response.data
     console.log(response.data)
   } catch (error) {

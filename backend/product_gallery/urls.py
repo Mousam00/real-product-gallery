@@ -9,15 +9,15 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # JWT redirect view - put this BEFORE the 'auth/' include paths
-    path('auth/google/login/callback/', GoogleAuthRedirectAPIView.as_view(), name='google_auth_redirect'),
+    path('auth/account/google/login/callback/', GoogleAuthRedirectAPIView.as_view(), name='google_auth_redirect'),
 
     # Auth
-    path('auth/', include('dj_rest_auth.urls')),
-    path('auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
 
     # Social login routes
     path('auth/social/', include('allauth.socialaccount.urls')),  # Connections, signup, cancelled, error etc
-    path('auth/', include('allauth.urls')),  # <-- THIS is where /auth/login/google/ comes from
+    path('auth/account/', include('allauth.urls')),  # <-- THIS is where /auth/login/google/ comes from
 
     # Accounts + Product APIs
     path('api/accounts/', include('accounts.urls')),

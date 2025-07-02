@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets,permissions
-from . Serializer import ReviewSerializer
+from . Serializer import ReviewSerializer,OnlyReviewSerializer
 from . models import Review
 from .Serializer import ProductSerializer
 from .Serializer import FeaturedProductSerializer
@@ -19,6 +19,15 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # Automatically assign the logged-in user to the review
         serializer.save(user=self.request.user)
+
+class OnlyReviewViewSet(viewsets.ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = OnlyReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 class FeaturedProductsView(ListAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
