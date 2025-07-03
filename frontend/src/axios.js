@@ -30,7 +30,7 @@ api.interceptors.response.use(
         const refreshToken = localStorage.getItem('refresh_token');
 
         if (refreshToken) {
-          const response = await axios.post('http://localhost:8000/api/auth/jwt/refresh/', {
+          const response = await api.post('auth/jwt/refresh/', {
             refresh: refreshToken,
           });
 

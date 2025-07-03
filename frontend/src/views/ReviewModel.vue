@@ -67,7 +67,7 @@ const handleSubmit = async () => {
       formData.append('product_title', productTitle.value)
       formData.append('product_url', productUrl.value)
       formData.append('product_description', productDescription.value)
-      await api.post('review/', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+      await api.post('api/review/', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
     } else if (props.mode === 'only-review') {
       if (!props.productId) {
         alert('Missing product ID.')
@@ -75,7 +75,7 @@ const handleSubmit = async () => {
         return
       }
       formData.append('product', props.productId)
-      await api.post('only-review/', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+      await api.post('api/only-review/', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
     }
 
     emit('submit')

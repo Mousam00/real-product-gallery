@@ -133,7 +133,7 @@ const openModal = (mode) => {
 const closeModal = () => {
   showModal.value = false
 }
-const selectedProductId = ref(null)
+const selectedProductId = ref(parseInt(route.params.id))
 
 function sanitize(html) {
   return DOMPurify.sanitize(html)
@@ -142,7 +142,7 @@ function sanitize(html) {
 const fetchDetails = async () => {
   try {
     const id = route.params.id
-    const response = await api.get(`/products/${id}`);
+    const response = await api.get(`api/products/${id}`);
     console.log(response.data);
     
     product.value = response.data;
@@ -151,7 +151,7 @@ const fetchDetails = async () => {
   }
 }
 
-const apiBaseURL = 'http://127.0.0.1:8000'
+const apiBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 function getImageUrl(product) {
   return product

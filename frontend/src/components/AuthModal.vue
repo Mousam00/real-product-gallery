@@ -79,6 +79,7 @@
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
 import axios from 'axios'
+import api from '@/axios'
 
 const auth = useAuthStore()
 
@@ -121,7 +122,7 @@ const handleSubmit = async () => {
     }
 
     try {
-      await axios.post('http://127.0.0.1:8000/api/auth/users/', {
+      await api.post('api/auth/users/', {
         email: formData.value.email,
         username: formData.value.username,
         password: formData.value.password,
@@ -147,7 +148,7 @@ const handleSubmit = async () => {
 
   // LOGIN logic
   try {
-    const response = await axios.post('http://127.0.0.1:8000/api/accounts/login/', formData.value)
+    const response = await api.post('api/accounts/login/', formData.value)
     const { access, refresh, user } = response.data
     auth.login(access, refresh, user)
     emit('close')
@@ -163,8 +164,9 @@ const handleSubmit = async () => {
   }
 }
 
+const backend = import.meta.env.VITE_BACKEND_BASE_URL;
 const loginWithGoogle = () => {
-  window.location.href = 'http://localhost:8000/auth/account/google/login/'
+  window.location.href = `${backend}auth/account/google/login/`
 }
 
 const formatErrorResponse = (data) => {

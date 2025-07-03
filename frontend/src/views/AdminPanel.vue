@@ -98,11 +98,11 @@ const pendingProducts = ref([])
 const handleClick = async (id, status) => {
   try {
     if(status === 'approved') {
-    const response = await api.post(`/admin/${id}/approve/`)
+    const response = await api.post(`api/admin/${id}/approve/`)
     featchProducts()
     console.log(response.data)
     } else if(status === 'rejected') {
-      const response = await api.post(`/admin/${id}/reject/`)
+      const response = await api.post(`api/admin/${id}/reject/`)
       console.log(response.data)
       featchProducts()
     } else {
@@ -115,7 +115,7 @@ const handleClick = async (id, status) => {
 }
 const featchProducts = async () => {
   try {
-    const response = await api.get('/admin/')
+    const response = await api.get('api/admin/')
     pendingProducts.value = response.data
     console.log(response.data)
   } catch (error) {
@@ -123,7 +123,7 @@ const featchProducts = async () => {
     
   }
 }
-const apiBaseURL = 'http://127.0.0.1:8000'
+const apiBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 function getImageUrl(product) {
   return product

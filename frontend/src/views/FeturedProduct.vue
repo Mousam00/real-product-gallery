@@ -83,7 +83,7 @@ const handleClick = async (params) => {
 const fetchProduct = async() =>{
 
   try {
-    const response = await api.get('featured/');
+    const response = await api.get('api/featured/');
     console.log(response.data);
     
     
@@ -97,12 +97,19 @@ const fetchProduct = async() =>{
 }
 
 
-const apiBaseURL = 'http://127.0.0.1:8000'
+const apiBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 function getImageUrl(product) {
-  return product.featured_image
-    ? apiBaseURL + product.featured_image
-    : 'https://via.placeholder.com/400x300?text=No+Image'
+  if (!product.featured_image) {
+    return 'https://via.placeholder.com/400x300?text=No+Image';
+  }
+  // Remove trailing slash from base URL if present
+  const base = apiBaseURL.endsWith('/') ? apiBaseURL.slice(0, -1) : apiBaseURL;
+  // Remove leading slash from image path if present
+  const imgPath = product.featured_image.startsWith('/') ? product.featured_image.slice(1) : product.featured_image;
+  console.log(base+'/'+imgPath);
+  
+  return `${base}/${imgPath}`;
 }
 
 onMounted(() => {

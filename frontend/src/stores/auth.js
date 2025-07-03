@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import axios from "axios";
 import router from "@/routers";
-
+import api from "@/axios";
 export const useAuthStore = defineStore('auth', () => {
   // State
   const token = ref(localStorage.getItem("access_token"));
@@ -32,7 +32,7 @@ export const useAuthStore = defineStore('auth', () => {
     isLoading.value = true;
     error.value = null;
     try {
-      const response = await axios.get('http://localhost:8000/auth/account/google/login/callback/', {
+      const response = await api.get('auth/account/google/login/callback/', {
         params: { code }
       });
       
@@ -77,7 +77,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/accounts/user/');
+      const response = await api.get('api/accounts/user/');
       user.value = response.data;
       localStorage.setItem("user", JSON.stringify(response.data));
       return response.data;
@@ -98,7 +98,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/auth/jwt/refresh/', {
+      const response = await api.post('auth/jwt/refresh/', {
         refresh: refreshToken.value
       });
       
@@ -107,7 +107,7 @@ export const useAuthStore = defineStore('auth', () => {
       setAxiosAuthHeader(response.data.access);
       
       // Retry fetching user
-      const userResponse = await axios.get('http://127.0.0.1:8000/api/accounts/user/');
+      const userResponse = await api.get('api/accounts/user/');
       user.value = userResponse.data;
       localStorage.setItem("user", JSON.stringify(userResponse.data));
       return userResponse.data;

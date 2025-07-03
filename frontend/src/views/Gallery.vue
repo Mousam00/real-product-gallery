@@ -96,33 +96,11 @@ import api from '@/axios';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 // Example static product list — replace later with API or Pinia store
-const products = ref([
-  // {
-  //   id: 1,
-  //   title: 'Sample Product 1',
-  //   image: 'https://images.unsplash.com/photo-1749731630653-d9b3f00573ed?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-
-  //   rating: 4.5,
-  //   reviewCount: 12,
-  //   description: 'A wonderful product with great features.',
-  //   submittedAt: '2025-06-17',
-  // },
-  // {
-  //   id: 2,
-  //   title: 'Another Product',
-  //   image: 'https://images.unsplash.com/photo-1749731630653-d9b3f00573ed?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-
-  //   rating: 3.9,
-  //   reviewCount: 8,
-  //   description: 'Some details about this product.',
-  //   submittedAt: '2025-06-10',
-  // },
-  // ... more products
-])
+const products = ref([])
 
 const featchProducts = async () => {
   try {
-    const response = await api.get('/gallery/');
+    const response = await api.get('api/gallery/');
     products.value = response.data;
     console.log("kjlj",response.data);
     
@@ -131,7 +109,7 @@ const featchProducts = async () => {
   }
 }
 
-const apiBaseURL = 'http://127.0.0.1:8000'
+const apiBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 function getImageUrl(product) {
   return product.first_image

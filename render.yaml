@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: product_gallery
+    env: python
+    plan: free
+    region: oregon  # or change as needed
+    branch: main  # your deploy branch
+    workingDirectory: backend
+    buildCommand: |
+      cd backend && pip install -r requirements.txt
+      cd backend && python manage.py migrate
+      cd backend && python manage.py collectstatic --noinput
+
+    startCommand: |
+      cd backend && gunicorn product_gallery.wsgi:application --bind 0.0.0.0:8000 --workers 1
+
+    envVars:
+      - key: SECRET_KEY
+        sync: false
+      - key: DEBUG
+        value: "False"
+    autoDeploy: true

@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-mcbfwsqd5acn=iyb)%@%zl19a$+5()5mfch9ksk9j^(n)q9rq2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['0.0.0.0','real-product-gallery.onrender.com','https://product-gallery-g7lf.onrender.com/','127.0.0.1']
 
 
 # Application definition
@@ -147,7 +147,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # folder where collectstatic will gather all static files
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -190,13 +192,19 @@ SOCIALACCOUNT_AUTO_LINK_EMAIL = True
 # SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_UNIQUE_EMAIL = True
-# LOGIN_REDIRECT_URL = 'http://localhost:5173/'  # redirect after login
-# LOGIN_REDIRECT_URL = 'http://localhost:5173/auth/social/google/callback'
-FRONTEND_URL = 'http://localhost:5173/'  # frontend url
-LOGIN_REDIRECT_URL = 'http://localhost:5173/'
 
-# GOOGLE_OAUTH2_REDIRECT_URI = 'http://localhost:8000/auth/google/login/callback/'
+# REDIRECT_URI='https://real-product-gallery.onrender.com/auth/account/google/login/callback/'
 
+REDIRECT_URI='http://127.0.0.1:8000/auth/account/google/login/callback/'
+
+if DEBUG:
+    FRONTEND_URL = 'http://localhost:5173/'
+    LOGIN_REDIRECT_URL = 'http://localhost:5173/'
+else:
+    FRONTEND_URL = 'https://product-gallery-g7lf.onrender.com/'
+    LOGIN_REDIRECT_URL = 'https://product-gallery-g7lf.onrender.com/'
+
+LOGIN_REDIRECT_URL = FRONTEND_URL
 
 REST_USE_JWT = True
 
