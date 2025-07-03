@@ -15,6 +15,8 @@ from dotenv import load_dotenv, find_dotenv
 
 import os
 
+load_dotenv(find_dotenv())
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,6 +29,7 @@ SECRET_KEY = 'django-insecure-mcbfwsqd5acn=iyb)%@%zl19a$+5()5mfch9ksk9j^(n)q9rq2
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+
 
 
 ALLOWED_HOSTS = ['0.0.0.0','real-product-gallery.onrender.com','product-gallery-g7lf.onrender.com','127.0.0.1']
@@ -212,6 +215,6 @@ LOGIN_REDIRECT_URL = FRONTEND_URL
 REST_USE_JWT = True
 
 
-load_dotenv(find_dotenv())
+
 SOCIAL_AUTH_GOOGLE_CLIENT_ID=os.environ.get('SOCIAL_AUTH_GOOGLE_CLIENT_ID')
 SOCIAL_AUTH_GOOGLE_SECRET=os.environ.get('SOCIAL_AUTH_GOOGLE_SECRET')
