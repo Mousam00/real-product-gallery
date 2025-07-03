@@ -65,6 +65,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
 
     "corsheaders.middleware.CorsMiddleware",
@@ -82,6 +83,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'product_gallery.urls'
 
 CORS_ALLOW_ALL_ORIGINS = True # Enable CORS for all origins
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 TEMPLATES = [
     {
