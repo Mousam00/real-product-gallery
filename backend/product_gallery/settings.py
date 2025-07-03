@@ -196,16 +196,16 @@ SOCIALACCOUNT_AUTO_LINK_EMAIL = True
 SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_UNIQUE_EMAIL = True
 
-# REDIRECT_URI='https://real-product-gallery.onrender.com/auth/account/google/login/callback/'
 
-REDIRECT_URI='http://127.0.0.1:8000/auth/account/google/login/callback/'
 
 if DEBUG:
     FRONTEND_URL = 'http://localhost:5173/'
     LOGIN_REDIRECT_URL = 'http://localhost:5173/'
+    REDIRECT_URI='http://127.0.0.1:8000/auth/account/google/login/callback/' 
 else:
     FRONTEND_URL = 'https://product-gallery-g7lf.onrender.com/'
     LOGIN_REDIRECT_URL = 'https://product-gallery-g7lf.onrender.com/'
+    REDIRECT_URI='https://real-product-gallery.onrender.com/auth/account/google/login/callback/' # redirect uri
 
 LOGIN_REDIRECT_URL = FRONTEND_URL
 
