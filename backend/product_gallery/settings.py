@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-mcbfwsqd5acn=iyb)%@%zl19a$+5()5mfch9ksk9j^(n)q9rq2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','real-product-gallery.onrender.com','https://product-gallery-g7lf.onrender.com/','127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0','real-product-gallery.onrender.com','product-gallery-g7lf.onrender.com','127.0.0.1']
 
 
 # Application definition
@@ -71,7 +71,6 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
 
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
