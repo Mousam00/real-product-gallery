@@ -159,4 +159,6 @@ class GoogleAuthRedirectAPIView(APIView):
         }
         frontend_url = settings.FRONTEND_URL  # e.g. 'http://localhost:5173/auth/social/google/callback'
         redirect_url = f"{frontend_url}auth/google/callback?{urlencode(params)}"
+        print(f"[DEBUG] Using redirect_uri: {settings.REDIRECT_URI}")
+
         return redirect(redirect_url)
