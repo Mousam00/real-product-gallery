@@ -29,5 +29,5 @@ venv/
 .vscode/
 .idea/
 
-staticfiles/
-/staticfiles/
+# staticfiles/
+# /staticfiles/
