@@ -15,6 +15,8 @@ from dotenv import load_dotenv, find_dotenv
 
 import os
 
+load_dotenv(find_dotenv())
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,9 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-mcbfwsqd5acn=iyb)%@%zl19a$+5()5mfch9ksk9j^(n)q9rq2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = os.environ.get('DJANGO_DEBUG')
+DEBUG = False
 
-ALLOWED_HOSTS = ['0.0.0.0','real-product-gallery.onrender.com','https://product-gallery-g7lf.onrender.com/','127.0.0.1']
+
+
+ALLOWED_HOSTS = ['0.0.0.0','real-product-gallery.onrender.com','product-gallery-g7lf.onrender.com','127.0.0.1']
 
 
 # Application definition
@@ -39,8 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
-
+    'cloudinary',
     'rest_framework',
     'rest_framework.authtoken',
 
@@ -63,6 +69,16 @@ INSTALLED_APPS = [
 
 ]
 
+
+CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME')
+CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
+CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET')
+
+
+
+CLOUDINARY_URL=f'cloudinary://{CLOUDINARY_API_KEY}:{CLOUDINARY_API_SECRET}@{CLOUDINARY_CLOUD_NAME}'
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -71,7 +87,6 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
 
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -153,8 +168,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # folder where collectstatic will gather all static files
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+MEDIA_URL = '/media/'  # This is still needed for URL generation
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Default primary key field type
@@ -189,29 +211,29 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by email
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
-SITE_ID = 2
+SITE_ID = 3
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_AUTO_LINK_EMAIL = True
 # SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_UNIQUE_EMAIL = True
 
-# REDIRECT_URI='https://real-product-gallery.onrender.com/auth/account/google/login/callback/'
 
-REDIRECT_URI='http://127.0.0.1:8000/auth/account/google/login/callback/'
 
 if DEBUG:
     FRONTEND_URL = 'http://localhost:5173/'
     LOGIN_REDIRECT_URL = 'http://localhost:5173/'
+    REDIRECT_URI='http://127.0.0.1:8000/auth/account/google/login/callback/' 
 else:
     FRONTEND_URL = 'https://product-gallery-g7lf.onrender.com/'
     LOGIN_REDIRECT_URL = 'https://product-gallery-g7lf.onrender.com/'
+    REDIRECT_URI='https://real-product-gallery.onrender.com/auth/account/google/login/callback/' # redirect uri
 
 LOGIN_REDIRECT_URL = FRONTEND_URL
 
 REST_USE_JWT = True
 
 
-load_dotenv(find_dotenv())
+
 SOCIAL_AUTH_GOOGLE_CLIENT_ID=os.environ.get('SOCIAL_AUTH_GOOGLE_CLIENT_ID')
 SOCIAL_AUTH_GOOGLE_SECRET=os.environ.get('SOCIAL_AUTH_GOOGLE_SECRET')

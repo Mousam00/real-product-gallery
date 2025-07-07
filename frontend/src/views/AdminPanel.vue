@@ -64,7 +64,7 @@
             <p class="text-gray-700">{{ product.initialReview.caption }}</p>
 
             <div v-if="product.initialReview.images.length" class="grid grid-cols-4 gap-2 mt-3">
-              <img v-for="(image, index) in product.initialReview.images" :key="index" :src="getImageUrl(image)" class="w-full h-16 object-cover rounded" />
+              <img v-for="(image, index) in product.initialReview.images" :key="index" :src="image" class="w-full h-16 object-cover rounded" />
             </div>
           </div>
 

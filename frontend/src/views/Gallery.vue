@@ -25,7 +25,7 @@
             <!-- Product Image -->
             <div v-if="product" class="aspect-video w-full overflow-hidden rounded-t-lg">
               <img
-                :src="getImageUrl(product)"
+                :src="product.first_image"
                 :alt="product.title"
                 class="w-full h-full object-cover"
               />

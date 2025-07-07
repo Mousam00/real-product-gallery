@@ -18,7 +18,7 @@
         >
           <div class="relative overflow-hidden">
             <img
-              :src="getImageUrl(product)"
+              :src="product.featured_image"
               :alt="product.title"
               class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
             />

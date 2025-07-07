@@ -20,13 +20,6 @@ const closeModal = () => {
   isModalOpen.value = false
 }
 
-const code = route.query.code;  // from vue-router or however you read URL params
-console.log(code);
-
-if (code) {
-  auth.loginWithGoogleCode(code);
-}
-
 
 const authMode =ref('register')
 

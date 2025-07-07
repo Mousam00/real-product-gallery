@@ -13,7 +13,8 @@ onMounted(() => {
   const refresh = query.refresh
   const username = query.username
   const email = query.email
-
+  console.log("at the auth page frontend");
+  
   if (access && refresh && username && email) {
     // Save tokens and user info in your auth store
     auth.login(access, refresh, { username, email })

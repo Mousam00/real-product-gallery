@@ -1,48 +1,54 @@
 from rest_framework import serializers
 from .models import Product, Review, ReviewImage
 from django.db.models import Avg
+from .utils import get_resized_image_url
+
 
 class ReviewImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReviewImage
         fields = ['image']
 
+
 class ProductSerializer(serializers.ModelSerializer):
-    submited_by = serializers.StringRelatedField(source='submited_by.username',read_only=True)
+    submited_by = serializers.StringRelatedField(source='submited_by.username', read_only=True)
     submited_at = serializers.DateTimeField(source='created_at', format='%Y-%m-%d', read_only=True)
     initialReview = serializers.SerializerMethodField()
     first_image = serializers.SerializerMethodField()
     all_reviews = serializers.SerializerMethodField()
     average_rating = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = Product
-        fields = ['id', 'title', 'url', 'description', 'status','first_image','average_rating', 'submited_by', 'submited_at','initialReview','all_reviews']
+        fields = [
+            'id', 'title', 'url', 'description', 'status', 'first_image',
+            'average_rating', 'submited_by', 'submited_at', 'initialReview', 'all_reviews'
+        ]
         read_only_fields = ['status', 'submited_by', 'created_at']
 
     def get_initialReview(self, obj):
-        review = obj.reviews.first()  # using related_name='reviews'
-        if review:
-            return ReviewSummarySerializer(review).data
-        return None
+        review = obj.reviews.first()
+        return ReviewSummarySerializer(review).data if review else None
+
     def get_first_image(self, obj):
         first_image = ReviewImage.objects.filter(review__product=obj).first()
         if first_image:
-            return first_image.image.url
+            return get_resized_image_url(first_image.image, width=600, height=600)
         return None
+
+
     def get_all_reviews(self, obj):
-        all_reviews = Review.objects.filter(product=obj).order_by('-created_at')[:]
-        if all_reviews:
-            return ReviewSerializer(all_reviews, many=True).data
-        return None
+        all_reviews = Review.objects.filter(product=obj).order_by('-created_at')
+        return ReviewSerializer(all_reviews, many=True).data
+
     def get_average_rating(self, obj):
-            return round(obj.reviews.aggregate(avg=Avg('rating'))['avg'] or 0, 1)
+        return round(obj.reviews.aggregate(avg=Avg('rating'))['avg'] or 0, 1)
+
 
 class ReviewSerializer(serializers.ModelSerializer):
     images = ReviewImageSerializer(many=True, read_only=True)
     uploaded_images = serializers.ListField(
-        child=serializers.ImageField(),
-        write_only=True
+        child=serializers.ImageField(), write_only=True
     )
     user = serializers.StringRelatedField(read_only=True)
 
@@ -64,7 +70,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         product_description = validated_data.pop('product_description', '')
         user = self.context['request'].user
 
-        product, created = Product.objects.get_or_create(
+        product, _ = Product.objects.get_or_create(
             url=product_url,
             defaults={
                 'title': product_title,
@@ -80,15 +86,20 @@ class ReviewSerializer(serializers.ModelSerializer):
             rating=validated_data.get('rating', 0)
         )
 
-        for image_file in images_data:
-            ReviewImage.objects.create(review=review, image=image_file)
+        self._save_review_images(images_data, review)
 
         return review
+
+    def _save_review_images(self, images_data, review):
+        for image_file in images_data:
+            image_instance = ReviewImage(review=review)
+            image_instance.image.save(image_file.name, image_file, save=True)
+
+
 class OnlyReviewSerializer(serializers.ModelSerializer):
     images = ReviewImageSerializer(many=True, read_only=True)
     uploaded_images = serializers.ListField(
-        child=serializers.ImageField(),
-        write_only=True
+        child=serializers.ImageField(), write_only=True
     )
     user = serializers.StringRelatedField(read_only=True)
 
@@ -113,52 +124,45 @@ class OnlyReviewSerializer(serializers.ModelSerializer):
             rating=validated_data.get('rating', 0)
         )
 
-        for image_file in images_data:
-            ReviewImage.objects.create(review=review, image=image_file)
+        self._save_review_images(images_data, review)
 
         return review
+
+    def _save_review_images(self, images_data, review):
+        for image_file in images_data:
+            image_instance = ReviewImage(review=review)
+            image_instance.image.save(image_file.name, image_file, save=True)
+
 
 class ReviewSummarySerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(source='user.username', read_only=True)
     images = serializers.SerializerMethodField()
-    created_at= serializers.DateTimeField(format='%Y-%m-%d', read_only=True)
+    created_at = serializers.DateTimeField(format='%Y-%m-%d', read_only=True)
+
     class Meta:
         model = Review
         fields = ['id', 'user', 'caption', 'rating', 'images', 'created_at']
 
     def get_images(self, obj):
-        return [img.image.url for img in obj.images.all()]
+        return [
+            get_resized_image_url(img.image, 800, 800)
+            for img in obj.images.all()
+        ]
+
 
 class FeaturedProductSerializer(serializers.ModelSerializer):
     average_rating = serializers.SerializerMethodField()
-    # review_count = serializers.SerializerMethodField()
-    # recent_reviews = serializers.SerializerMethodField()
     featured_image = serializers.SerializerMethodField()
-    # featured_caption = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
+        fields = ['id', 'title', 'average_rating', 'featured_image']
+
+    def get_average_rating(self, obj):
+        return round(obj.reviews.aggregate(avg=Avg('rating'))['avg'] or 0, 1)
 
     def get_featured_image(self, obj):
         first_image = ReviewImage.objects.filter(review__product=obj).first()
         if first_image:
-            return first_image.image.url
+            return get_resized_image_url(first_image.image, 600, 600)
         return None
-    
-    class Meta:
-        model = Product
-        fields = ['id', 'title',  'average_rating','featured_image']
-    #  'review_count', 'recent_reviews','url','description','featured_caption',
-    def get_average_rating(self, obj):
-        return round(obj.reviews.aggregate(avg=Avg('rating'))['avg'] or 0, 1)
-
-    # def get_review_count(self, obj):
-    #     return obj.reviews.count()
-
-    # def get_recent_reviews(self, obj):
-    #     reviews = obj.reviews.order_by('-created_at')[:3]
-    #     return ReviewSummarySerializer(reviews, many=True).data
-
-    def get_featured_caption(self, obj):
-        review = obj.reviews.order_by('-created_at').first()
-        if review:
-            return review.caption
-        return None
-    

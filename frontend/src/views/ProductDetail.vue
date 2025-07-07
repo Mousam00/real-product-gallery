@@ -39,7 +39,7 @@
 
             <div class="flex items-center space-x-2 mb-6">
               <ExternalLink class="h-5 w-5 text-indigo-600" />
-              <a :href="getSafeUrl(product.url)" target="_blank" rel="noopener noreferrer"
+              <a :href="product.url" target="_blank" rel="noopener noreferrer"
                 class="text-indigo-600 hover:text-indigo-800 underline font-medium">View Product Page</a>
             </div>
           </div>
@@ -95,7 +95,7 @@
               <p class="text-gray-700 mb-4" v-html="sanitize(product.initialReview.caption)"></p>
 
               <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <img v-for="(img, i) in product.initialReview.images" :key="i" :src="getImageUrl(img)"
+                <img v-for="(img, i) in product.initialReview.images" :key="i" :src="img"
                   alt="Review image"
                   class="w-full h-24 object-cover rounded-lg hover:scale-105 transition-transform cursor-pointer"
                   @error="event => event.target.src = 'https://via.placeholder.com/400x300?text=No+Image'" />
@@ -151,24 +151,7 @@ const fetchDetails = async () => {
   }
 }
 
-const apiBaseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
-function getImageUrl(product) {
-  return product
-    ? apiBaseURL + product
-    : 'https://via.placeholder.com/400x300?text=No+Image'
-}
-
-function getSafeUrl(url) {
-  try {
-    const parsed = new URL(url, window.location.origin);
-    // Only allow http(s) protocols and optionally restrict to trusted domains
-    if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
-      return parsed.href;
-    }
-  } catch (e) { }
-  return '#';
-}
 
 onMounted(() => {
   fetchDetails()
