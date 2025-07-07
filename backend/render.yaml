@@ -3,8 +3,8 @@ services:
     name: product_gallery
     env: python
     plan: free
-    region: oregon  # or change as needed
-    branch: main  # your deploy branch
+    region: oregon
+    branch: main
     workingDirectory: backend
     buildCommand: |
       pip install -r requirements.txt
@@ -14,9 +14,12 @@ services:
     startCommand: |
       gunicorn product_gallery.wsgi:application --bind 0.0.0.0:8000 --workers 1
 
+    healthCheckPath: /
+
     envVars:
       - key: SECRET_KEY
         sync: false
       - key: DEBUG
         value: "False"
     autoDeploy: true
+
