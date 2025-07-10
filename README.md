@@ -26,6 +26,9 @@ An open-source full-stack web application that lets online shoppers upload and b
 ![photos alt](https://github.com/Mousam00/real-product-gallery/blob/main/photos/Screenshot%202025-07-08%20at%201.02.27%20AM.png?raw=true)
 ![photos alt](https://github.com/Mousam00/real-product-gallery/blob/main/photos/Screenshot%202025-07-08%20at%201.01.36%20AM.png?raw=true)
 ![photos alt](https://github.com/Mousam00/real-product-gallery/blob/main/photos/Screenshot%202025-07-08%20at%201.05.55%20AM.png?raw=true)
+![photos alt](https://github.com/Mousam00/real-product-gallery/blob/main/photos/Screenshot%202025-07-10%20at%209.01.46%20PM.png?raw=true)
+![photos alt](https://github.com/Mousam00/real-product-gallery/blob/main/photos/Screenshot%202025-07-10%20at%209.02.14%20PM.png?raw=true)
+![photos alt](https://github.com/Mousam00/real-product-gallery/blob/main/photos/Screenshot%202025-07-10%20at%209.00.18%20PM.png?raw=true)
 
 
 ## 📦 Installation
