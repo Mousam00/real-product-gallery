@@ -21,7 +21,11 @@ An open-source full-stack web application that lets online shoppers upload and b
 **Authentication:** JWT (SimpleJWT or Djoser)
 
 ## 📸 Screenshots
-
+![photos alt](https://github.com/Mousam00/real-product-gallery/blob/main/photos/Screenshot%202025-07-08%20at%201.00.36%20AM.png?raw=true)
+![photos alt](https://github.com/Mousam00/real-product-gallery/blob/main/photos/Screenshot%202025-07-08%20at%201.02.13%20AM.png?raw=true)
+![photos alt](https://github.com/Mousam00/real-product-gallery/blob/main/photos/Screenshot%202025-07-08%20at%201.02.27%20AM.png?raw=true)
+![photos alt](https://github.com/Mousam00/real-product-gallery/blob/main/photos/Screenshot%202025-07-08%20at%201.01.36%20AM.png?raw=true)
+![photos alt](https://github.com/Mousam00/real-product-gallery/blob/main/photos/Screenshot%202025-07-08%20at%201.05.55%20AM.png?raw=true)
 
 
 ## 📦 Installation
